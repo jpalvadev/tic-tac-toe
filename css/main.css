@@ -1,11 +1,35 @@
 .board {
   width: 100vw;
   height: 100vh;
+  display: -ms-grid;
   display: grid;
-  justify-content: center;
-  align-content: center;
-  grid-template-columns: repeat(3, auto);
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -ms-flex-line-pack: center;
+      align-content: center;
+  -ms-grid-columns: (auto)[3];
+      grid-template-columns: repeat(3, auto);
   grid-gap: 1rem;
+}
+
+.board.x .cell:hover:not(.o):not(.x)::before,
+.board.o .cell:hover:not(.o):not(.x)::before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  opacity: 0.25;
+}
+
+.board.x .cell:hover:not(.o):not(.x)::before {
+  background: url("../images/x.png") no-repeat center;
+  background-size: 80%;
+}
+
+.board.o .cell:hover:not(.o):not(.x)::before {
+  background: url("../images/o.png") no-repeat center;
+  background-size: 80%;
 }
 
 .cell {
@@ -13,34 +37,65 @@
   height: 10rem;
   border: 1px solid black;
   position: relative;
-}
-
-.cell:hover:not(.o):not(.x)::before {
-  content: '';
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background: url("../images/x.png") no-repeat center;
-  background-size: 80%;
-  opacity: 0.3;
+  cursor: pointer;
 }
 
 .cell.x {
   background: url("../images/x.png") no-repeat center;
-  background-size: 80%;
-}
-
-.cell.x:hover {
-  cursor: not-allowed;
 }
 
 .cell.o {
   background: url("../images/o.png") no-repeat center;
+}
+
+.cell.o, .cell.x {
+  cursor: not-allowed;
   background-size: 80%;
 }
 
-.cell.o:hover {
-  cursor: not-allowed;
+.winning-message {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: none;
+  background-color: rgba(0, 0, 0, 0.9);
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  color: white;
+  font-size: 5rem;
+}
+
+.winning-message button {
+  color: black;
+  font-size: 3rem;
+  background-color: white;
+  border: 2px solid black;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  -webkit-transition: all 0.3s;
+  transition: all 0.3s;
+}
+
+.winning-message button:hover {
+  background-color: black;
+  border-color: white;
+  color: white;
+}
+
+.winning-message.visible {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
 }
 
 *,
@@ -48,13 +103,15 @@
 *::after {
   margin: 0;
   padding: 0;
-  box-sizing: inherit;
+  -webkit-box-sizing: inherit;
+          box-sizing: inherit;
   font: inherit;
   color: inherit;
 }
 
 html {
   font-size: 62.5%;
-  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
 }
 /*# sourceMappingURL=main.css.map */
