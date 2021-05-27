@@ -3,7 +3,9 @@
 @import 'utils/animations';
 @import 'utils/helpers';
 
-@import 'layout/main-layout';
+@import 'layout/game';
+@import 'layout/options';
+@import 'layout/winning-message';
 
 @import 'base/base';
 @import 'base/typography';

@@ -1,16 +1,10 @@
 const gameBoard = (function () {
   const playerOne = 'x'; // human
   const playerTwo = 'o'; // AI
-  let difficulty;
 
-  function setDifficulty(diffSelected) {
-    difficulty = Number(diffSelected);
-  }
+  let origBoard = [0, 1, 2, 3, 4, 5, 6, 7, 8];
 
-  // let origBoard = [0, 1, 2, 3, 4, 5, 6, 7, 8];
-  let origBoard = [];
-
-  const board = document.querySelector('.game__board');
+  const board = document.querySelector('.board');
   const cells = document.querySelectorAll('.cell');
   const winningOverlay = document.querySelector('.winning-message');
   const winningTextEl = document.querySelector('.winning-text');
@@ -111,11 +105,8 @@ const gameBoard = (function () {
 
   let oTurn;
 
-  function startGame(options) {
+  function startGame() {
     oTurn = false;
-
-    console.log(difficulty);
-
     origBoard = [0, 1, 2, 3, 4, 5, 6, 7, 8];
     cells.forEach((cell) => {
       cell.classList.remove(playerTwo);
@@ -128,17 +119,7 @@ const gameBoard = (function () {
     setBoardHoverClass();
   }
 
-  // startGame();
-
-  function randomAIMove() {
-    const possibleMoves = emptyIndexies(origBoard);
-    return possibleMoves[Math.floor(Math.random() * possibleMoves.length)];
-  }
-
-  function bestAIMove() {
-    const bestSpot = minimax(origBoard, playerTwo);
-    return bestSpot.index;
-  }
+  startGame();
 
   function handleClick(e) {
     const cell = e.target;
@@ -152,27 +133,8 @@ const gameBoard = (function () {
     // CPU Move
     currentClass = oTurn ? playerTwo : playerOne;
 
-    let computerMove;
-    switch (difficulty) {
-      case 0:
-        computerMove = randomAIMove();
-        break;
-
-      case 1:
-        if (Math.random() > 0.5) {
-          computerMove = bestAIMove();
-        } else {
-          computerMove = randomAIMove();
-        }
-        break;
-
-      case 2:
-        computerMove = bestAIMove();
-        break;
-    }
-
-    // const bestSpot = minimax(origBoard, playerTwo);
-    // const computerMove = bestSpot.index;
+    var bestSpot = minimax(origBoard, playerTwo);
+    const computerMove = bestSpot.index;
 
     cells[computerMove].removeEventListener('click', handleClick);
     putMarkOnBoardArray(computerMove, currentClass);
@@ -249,62 +211,4 @@ const gameBoard = (function () {
     }
     winningOverlay.classList.add('visible');
   }
-
-  return {
-    startGame,
-    setDifficulty,
-  };
 })();
-
-const displayBoard = (function () {
-  const difficultyLevels = document.querySelector('.options__diff-levels');
-  const playersBtns = document.querySelector('.options__player-btns');
-  const optionsScreen = document.querySelector('.options');
-  const optionsSelected = {
-    players: false,
-    difficulty: false,
-  };
-
-  const startBtn = document.querySelector('.options__start-btn');
-  startBtn.addEventListener('click', function () {
-    optionsScreen.classList.remove('visible');
-    startBtn.classList.remove('visible');
-
-    gameBoard.setDifficulty(optionsSelected.difficulty);
-    // console.log(gameBoard.difficulty);
-
-    gameBoard.startGame();
-  });
-
-  difficultyLevels.addEventListener('click', function (e) {
-    if (!e.target.closest('button')) return;
-    [...difficultyLevels.children].forEach((btn) =>
-      btn.classList.remove('selected')
-    );
-    e.target.classList.add('selected');
-
-    optionsSelected.difficulty = e.target.dataset.difficulty;
-    console.log(optionsSelected.difficulty);
-
-    checkOptions();
-  });
-
-  playersBtns.addEventListener('click', function (e) {
-    if (!e.target.closest('button')) return;
-    [...playersBtns.children].forEach((btn) =>
-      btn.classList.remove('selected')
-    );
-    e.target.classList.add('selected');
-
-    optionsSelected.players = true;
-    checkOptions();
-  });
-
-  function checkOptions() {
-    if (optionsSelected.players && optionsSelected.difficulty) {
-      startBtn.classList.add('visible');
-    }
-  }
-})();
-
-const Controller = (function () {})();

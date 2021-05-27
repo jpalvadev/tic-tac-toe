@@ -10,22 +10,64 @@
     <title>Tic Tac Toe game</title>
   </head>
   <body>
-    <div class="board x">
-      <div class="cell" data-position="0"></div>
-      <div class="cell" data-position="1"></div>
-      <div class="cell" data-position="2"></div>
-      <div class="cell" data-position="3"></div>
-      <div class="cell" data-position="4"></div>
-      <div class="cell" data-position="5"></div>
-      <div class="cell" data-position="6"></div>
-      <div class="cell" data-position="7"></div>
-      <div class="cell" data-position="8"></div>
-      <!-- <button class="prueba">click</button> -->
-    </div>
+    <div class="game">
+      <div class="game__player-info">
+        <p class="game__player-name--one">Camilo Sexto</p>
+        <p class="game__player-score--one">10</p>
+      </div>
 
+      <div class="game__board x">
+        <div class="cell" data-position="0"></div>
+        <div class="cell" data-position="1"></div>
+        <div class="cell" data-position="2"></div>
+        <div class="cell" data-position="3"></div>
+        <div class="cell" data-position="4"></div>
+        <div class="cell" data-position="5"></div>
+        <div class="cell" data-position="6"></div>
+        <div class="cell" data-position="7"></div>
+        <div class="cell" data-position="8"></div>
+        <!-- <button class="prueba">click</button> -->
+      </div>
+      <div class="game__player-info">
+        <p class="game__player-name--two">Jose Velez</p>
+        <p class="game__player-score--two">5</p>
+      </div>
+    </div>
     <div class="winning-message">
       <div class="winning-text"></div>
       <button class="restartBtn">Restart</button>
+    </div>
+
+    <div class="options visible">
+      <!-- <h2 class="options__text"></h2> -->
+      <div class="options__player-btns">
+        <button>Human VS AI</button>
+        <button>Human VS Human</button>
+      </div>
+
+      <form class="options__form">
+        <label for="player-1">Player One</label>
+        <input
+          type="text"
+          id="player-1"
+          placeholder="Enter Player Two Name"
+          required
+        />
+
+        <label for="player-1">Player Two</label>
+        <input
+          type="text"
+          id="player-1"
+          placeholder="Enter Player Two Name"
+          required
+        />
+      </form>
+      <div class="options__diff-levels">
+        <button data-difficulty="0">Can I play, Daddy?</button>
+        <button data-difficulty="1">Bring 'em on!</button>
+        <button data-difficulty="2">I am Death incarnate!</button>
+      </div>
+      <button class="options__start-btn">Start Game</button>
     </div>
   </body>
 </html>
