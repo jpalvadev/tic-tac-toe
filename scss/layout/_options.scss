@@ -15,9 +15,17 @@
   align-items: center;
   background-color: cornflowerblue;
   visibility: hidden;
+  transform: scale(0);
+  transition: all 0.3s;
 
   &.visible {
+    transform: scale(1);
     visibility: visible;
+  }
+
+  &__form {
+    display: flex;
+    flex-direction: column;
   }
 
   button {
@@ -37,13 +45,22 @@
   }
 
   &__diff-levels {
+    visibility: hidden;
+    opacity: 0;
+
+    &.visible {
+      visibility: visible;
+      opacity: 1;
+    }
   }
 
   &__start-btn {
     visibility: hidden;
+    opacity: 0;
 
     &.visible {
       visibility: visible;
+      opacity: 1;
     }
   }
 }

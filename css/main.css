@@ -117,10 +117,18 @@
   align-items: center;
   background-color: cornflowerblue;
   visibility: hidden;
+  transform: scale(0);
+  transition: all 0.3s;
 }
 
 .options.visible {
+  transform: scale(1);
   visibility: visible;
+}
+
+.options__form {
+  display: flex;
+  flex-direction: column;
 }
 
 .options button {
@@ -139,12 +147,24 @@
   color: white;
 }
 
+.options__diff-levels {
+  visibility: hidden;
+  opacity: 0;
+}
+
+.options__diff-levels.visible {
+  visibility: visible;
+  opacity: 1;
+}
+
 .options__start-btn {
   visibility: hidden;
+  opacity: 0;
 }
 
 .options__start-btn.visible {
   visibility: visible;
+  opacity: 1;
 }
 
 .winning-message {

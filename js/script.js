@@ -1,102 +1,22 @@
 const gameBoard = (function () {
-  const playerOne = 'x'; // human
-  const playerTwo = 'o'; // AI
-  let difficulty;
+  ///////// Definitions /////////
 
-  function setDifficulty(diffSelected) {
-    difficulty = Number(diffSelected);
-  }
-
-  // let origBoard = [0, 1, 2, 3, 4, 5, 6, 7, 8];
-  let origBoard = [];
-
+  const difficultyLevels = document.querySelector('.options__diff-levels');
+  const playersBtns = document.querySelector('.options__player-btns');
+  const optionsScreen = document.querySelector('.options');
+  const startBtn = document.querySelector('.options__start-btn');
   const board = document.querySelector('.game__board');
   const cells = document.querySelectorAll('.cell');
   const winningOverlay = document.querySelector('.winning-message');
   const winningTextEl = document.querySelector('.winning-text');
-
-  ///////////////
-  /////////////
-  ///////////////
-
-  // the main minimax function
-  function minimax(newBoard, player) {
-    //available spots
-    const availSpots = emptyIndexies(newBoard);
-
-    // checks for the terminal states such as win, lose, and tie and returning a value accordingly
-    if (checkForWin(playerOne)) {
-      return { score: -10 };
-    } else if (checkForWin(playerTwo)) {
-      return { score: 10 };
-    } else if (availSpots.length === 0) {
-      return { score: 0 };
-    }
-
-    // an array to collect all the objects
-    const moves = [];
-
-    // loop through available spots
-    for (let i = 0; i < availSpots.length; i++) {
-      //create an object for each and store the index of that spot that was stored as a number in the object's index key
-      const move = {};
-      move.index = newBoard[availSpots[i]];
-
-      // set the empty spot to the current player
-      newBoard[availSpots[i]] = player;
-
-      //if collect the score resulted from calling minimax on the opponent of the current player
-      if (player == playerTwo) {
-        const result = minimax(newBoard, playerOne);
-        move.score = result.score;
-      } else {
-        const result = minimax(newBoard, playerTwo);
-        move.score = result.score;
-      }
-
-      //reset the spot to empty
-      newBoard[availSpots[i]] = move.index;
-
-      // push the object to the array
-      moves.push(move);
-    }
-
-    // if it is the computer's turn loop over the moves and choose the move with the highest score
-    let bestMove;
-    if (player === playerTwo) {
-      let bestScore = -10000;
-      for (let i = 0; i < moves.length; i++) {
-        if (moves[i].score > bestScore) {
-          bestScore = moves[i].score;
-          bestMove = i;
-        }
-      }
-    } else {
-      // else loop over the moves and choose the move with the lowest score
-      let bestScore = 10000;
-      for (let i = 0; i < moves.length; i++) {
-        if (moves[i].score < bestScore) {
-          bestScore = moves[i].score;
-          bestMove = i;
-        }
-      }
-    }
-
-    // return the chosen move (object) from the array to the higher depth
-    return moves[bestMove];
-  }
-
-  // returns the available spots on the board
-  function emptyIndexies(board) {
-    return board.filter((space) => space !== 'o' && space !== 'x');
-  }
-
-  ////////////
-  /////////////
-  ///////////
-
   const restartBtn = document.querySelector('.restartBtn');
-  restartBtn.addEventListener('click', startGame);
+  const resetBtn = document.querySelector('.reset-btn');
+  const turnText = document.querySelector('.turn-text');
+
+  const optionsSelected = {
+    players: false,
+    difficulty: false,
+  };
 
   const winConditions = [
     [0, 1, 2],
@@ -109,17 +29,40 @@ const gameBoard = (function () {
     [2, 4, 6],
   ];
 
-  let oTurn;
+  let playerTwoTurn;
 
-  function startGame(options) {
-    oTurn = false;
+  const playerOne = {
+    name: '',
+    nameEl: document.querySelector('.game__player-name--one'),
+    score: 0,
+    scoreEl: document.querySelector('.game__player-score--one'),
+    type: 'human',
+    mark: 'x',
+  };
 
-    console.log(difficulty);
+  const playerTwo = {
+    name: '',
+    nameEl: document.querySelector('.game__player-name--two'),
+    score: 0,
+    scoreEl: document.querySelector('.game__player-score--two'),
+    type: 'human',
+    mark: 'o',
+    difficulty: 0,
+  };
 
+  let origBoard = [];
+
+  /////////// Game Logic ///////////
+
+  function reset() {}
+
+  function startGame() {
+    playerTwoTurn = false;
     origBoard = [0, 1, 2, 3, 4, 5, 6, 7, 8];
+    turnText.textContent = `It's ${playerOne.name} turn`;
     cells.forEach((cell) => {
-      cell.classList.remove(playerTwo);
-      cell.classList.remove(playerOne);
+      cell.classList.remove(playerTwo.mark);
+      cell.classList.remove(playerOne.mark);
       winningOverlay.classList.remove('visible');
       cell.removeEventListener('click', handleClick);
       cell.addEventListener('click', handleClick, { once: true });
@@ -128,74 +71,129 @@ const gameBoard = (function () {
     setBoardHoverClass();
   }
 
-  // startGame();
-
   function randomAIMove() {
     const possibleMoves = emptyIndexies(origBoard);
     return possibleMoves[Math.floor(Math.random() * possibleMoves.length)];
   }
 
   function bestAIMove() {
-    const bestSpot = minimax(origBoard, playerTwo);
+    const bestSpot = minimax(origBoard, playerTwo.mark);
     return bestSpot.index;
+  }
+
+  function emptyIndexies(board) {
+    return board.filter((space) => space !== 'o' && space !== 'x');
   }
 
   function handleClick(e) {
     const cell = e.target;
-    let currentClass = oTurn ? playerTwo : playerOne;
-    // console.log(cell.dataset.position);
+    let currentPlayer = playerTwoTurn ? playerTwo : playerOne;
 
     // Player Move
-    putMarkOnBoardArray(cell.dataset.position, currentClass);
-    if (checkOutcome(cell, currentClass)) return;
+    putMarkOnBoardArray(cell.dataset.position, currentPlayer);
+    if (checkOutcome(cell, currentPlayer)) return;
+
+    if (playerTwo.type !== 'ai') return;
 
     // CPU Move
-    currentClass = oTurn ? playerTwo : playerOne;
+    currentPlayer = playerTwoTurn ? playerTwo : playerOne;
 
     let computerMove;
-    switch (difficulty) {
+    switch (playerTwo.difficulty) {
       case 0:
         computerMove = randomAIMove();
         break;
 
       case 1:
-        if (Math.random() > 0.5) {
-          computerMove = bestAIMove();
-        } else {
-          computerMove = randomAIMove();
-        }
+        if (Math.random() > 0.7) computerMove = bestAIMove();
+        else computerMove = randomAIMove();
         break;
 
       case 2:
         computerMove = bestAIMove();
+        cells[computerMove].removeEventListener('click', handleClick);
         break;
     }
 
-    // const bestSpot = minimax(origBoard, playerTwo);
-    // const computerMove = bestSpot.index;
-
-    cells[computerMove].removeEventListener('click', handleClick);
-    putMarkOnBoardArray(computerMove, currentClass);
-    checkOutcome(cells[computerMove], currentClass);
+    putMarkOnBoardArray(computerMove, currentPlayer);
+    checkOutcome(cells[computerMove], currentPlayer);
   }
 
-  function putMarkOnBoardArray(cell, currentClass) {
-    origBoard[cell] = currentClass;
-    console.log(origBoard);
+  function putMarkOnBoardArray(cell, currentPlayer) {
+    origBoard[cell] = currentPlayer.mark;
   }
 
-  function checkOutcome(cell, currentClass) {
-    // place mark
-    placeMark(cell, currentClass);
+  function swapTurn() {
+    playerTwoTurn = !playerTwoTurn;
+    if (playerTwoTurn) turnText.textContent = `It's ${playerTwo.name} turn`;
+    else turnText.textContent = `It's ${playerOne.name} turn`;
+  }
 
-    if (checkForWin(currentClass)) {
-      // console.log('corecctorr');
-      endGame(false);
+  /////////// Minimax ///////////
+
+  function minimax(newBoard, player) {
+    const availSpots = emptyIndexies(newBoard);
+    if (checkForWin(playerOne)) {
+      return { score: -10 };
+    } else if (checkForWin(playerTwo)) {
+      return { score: 10 };
+    } else if (availSpots.length === 0) {
+      return { score: 0 };
+    }
+
+    const moves = [];
+
+    for (let i = 0; i < availSpots.length; i++) {
+      const move = {};
+      move.index = newBoard[availSpots[i]];
+      newBoard[availSpots[i]] = player;
+
+      if (player === playerTwo.mark) {
+        const result = minimax(newBoard, playerOne.mark);
+        move.score = result.score;
+      } else {
+        const result = minimax(newBoard, playerTwo.mark);
+        move.score = result.score;
+      }
+
+      newBoard[availSpots[i]] = move.index;
+      moves.push(move);
+    }
+
+    let bestMove;
+    if (player === playerTwo.mark) {
+      let bestScore = -10000;
+      for (let i = 0; i < moves.length; i++) {
+        if (moves[i].score > bestScore) {
+          bestScore = moves[i].score;
+          bestMove = i;
+        }
+      }
+    } else {
+      let bestScore = 10000;
+      for (let i = 0; i < moves.length; i++) {
+        if (moves[i].score < bestScore) {
+          bestScore = moves[i].score;
+          bestMove = i;
+        }
+      }
+    }
+
+    return moves[bestMove];
+  }
+
+  /////////////// Outcome checks ///////////////
+
+  function checkOutcome(cell, currentPlayer) {
+    placeMark(cell, currentPlayer);
+
+    if (checkForWin(currentPlayer)) {
+      endGame(false, currentPlayer);
       return true;
     }
 
     if (checkForDraw()) {
-      endGame(true);
+      endGame(true, currentPlayer);
       return true;
     } else {
       swapTurn();
@@ -203,78 +201,72 @@ const gameBoard = (function () {
     }
   }
 
-  function placeMark(cell, currentClass) {
-    cell.classList.add(currentClass);
-  }
-
-  function swapTurn() {
-    oTurn = !oTurn;
-  }
-
-  function setBoardHoverClass() {
-    board.classList.remove(playerOne);
-    board.classList.remove(playerTwo);
-
-    if (oTurn) board.classList.add(playerTwo);
-    else board.classList.add(playerOne);
-  }
-
-  function checkForWin(currentClass) {
+  function checkForWin(currentPlayer) {
     return winConditions.some((condition) => {
       return condition.every((index) => {
-        // return cells[index].classList.contains(currentClass);
-        return origBoard[index] === currentClass;
-        // return (origBoard[index] = 'x');
+        return origBoard[index] === currentPlayer.mark;
       });
     });
   }
 
   function checkForDraw() {
-    // console.log('ja');
-    // cells is a Nodelist, and Nodelist doesn't contain the every method, so we use destructuring to transform the Nodelist into an array
-    return [...cells].every((cell) => {
-      return (
-        cell.classList.contains(playerTwo) || cell.classList.contains(playerOne)
-      );
-    });
+    return origBoard.every((cell) => typeof cell !== 'number');
   }
 
-  function endGame(draw) {
+  function endGame(draw, currentPlayer) {
     if (draw) {
-      console.log('empate');
       winningTextEl.textContent = `It's a DRAW!`;
-      // return;
     } else {
-      winningTextEl.textContent = `${oTurn ? "O's" : "X's"} Wins!`;
+      winningTextEl.textContent = `${currentPlayer.name} Wins!`;
+      currentPlayer.score++;
+      currentPlayer.scoreEl.textContent = currentPlayer.score;
     }
     winningOverlay.classList.add('visible');
   }
 
-  return {
-    startGame,
-    setDifficulty,
-  };
-})();
+  ////////////// UI changes and Event Listeners //////////////
 
-const displayBoard = (function () {
-  const difficultyLevels = document.querySelector('.options__diff-levels');
-  const playersBtns = document.querySelector('.options__player-btns');
-  const optionsScreen = document.querySelector('.options');
-  const optionsSelected = {
-    players: false,
-    difficulty: false,
-  };
+  function placeMark(cell, currentPlayer) {
+    cell.classList.add(currentPlayer.mark);
+  }
 
-  const startBtn = document.querySelector('.options__start-btn');
-  startBtn.addEventListener('click', function () {
+  function setBoardHoverClass() {
+    board.classList.remove(playerOne.mark);
+    board.classList.remove(playerTwo.mark);
+
+    if (playerTwoTurn) board.classList.add(playerTwo.mark);
+    else board.classList.add(playerOne.mark);
+  }
+
+  function checkOptions() {
+    if (optionsSelected.players && optionsSelected.difficulty) {
+      startBtn.classList.add('visible');
+    }
+  }
+
+  function setNameAndScore() {
+    playerOne.score = 0;
+    playerOne.scoreEl.textContent = playerOne.score;
+    playerOne.nameEl.textContent =
+      document.getElementById('player-1').value || 'John Connor';
+    playerOne.name = playerOne.nameEl.textContent;
+    playerTwo.score = 0;
+    playerTwo.scoreEl.textContent = playerTwo.score;
+    playerTwo.nameEl.textContent =
+      document.getElementById('player-2').value || 'T-1000';
+    playerTwo.name = playerTwo.nameEl.textContent;
+  }
+
+  startBtn.addEventListener('click', function (e) {
     optionsScreen.classList.remove('visible');
     startBtn.classList.remove('visible');
+    playerTwo.difficulty = Number(optionsSelected.difficulty);
 
-    gameBoard.setDifficulty(optionsSelected.difficulty);
-    // console.log(gameBoard.difficulty);
-
-    gameBoard.startGame();
+    setNameAndScore();
+    startGame();
   });
+
+  restartBtn.addEventListener('click', startGame);
 
   difficultyLevels.addEventListener('click', function (e) {
     if (!e.target.closest('button')) return;
@@ -282,15 +274,22 @@ const displayBoard = (function () {
       btn.classList.remove('selected')
     );
     e.target.classList.add('selected');
-
     optionsSelected.difficulty = e.target.dataset.difficulty;
     console.log(optionsSelected.difficulty);
-
     checkOptions();
   });
 
   playersBtns.addEventListener('click', function (e) {
     if (!e.target.closest('button')) return;
+
+    if (e.target.classList.contains('ai')) {
+      difficultyLevels.classList.add('visible');
+      playerTwo.type = 'ai';
+    } else {
+      difficultyLevels.classList.remove('visible');
+      playerTwo.type = 'human';
+    }
+
     [...playersBtns.children].forEach((btn) =>
       btn.classList.remove('selected')
     );
@@ -299,12 +298,4 @@ const displayBoard = (function () {
     optionsSelected.players = true;
     checkOptions();
   });
-
-  function checkOptions() {
-    if (optionsSelected.players && optionsSelected.difficulty) {
-      startBtn.classList.add('visible');
-    }
-  }
 })();
-
-const Controller = (function () {})();

@@ -12,8 +12,8 @@
   <body>
     <div class="game">
       <div class="game__player-info">
-        <p class="game__player-name--one">Camilo Sexto</p>
-        <p class="game__player-score--one">10</p>
+        <p class="game__player-name--one"></p>
+        <p class="game__player-score--one"></p>
       </div>
 
       <div class="game__board x">
@@ -27,10 +27,13 @@
         <div class="cell" data-position="7"></div>
         <div class="cell" data-position="8"></div>
         <!-- <button class="prueba">click</button> -->
+        <p class="turn-text"></p>
+        <button class="reset-btn">Reset</button>
       </div>
+
       <div class="game__player-info">
-        <p class="game__player-name--two">Jose Velez</p>
-        <p class="game__player-score--two">5</p>
+        <p class="game__player-name--two"></p>
+        <p class="game__player-score--two"></p>
       </div>
     </div>
     <div class="winning-message">
@@ -39,29 +42,33 @@
     </div>
 
     <div class="options visible">
-      <!-- <h2 class="options__text"></h2> -->
-      <div class="options__player-btns">
-        <button>Human VS AI</button>
-        <button>Human VS Human</button>
-      </div>
+      <h2 class="options__title">Tic Tac Toe</h2>
 
       <form class="options__form">
         <label for="player-1">Player One</label>
         <input
           type="text"
           id="player-1"
-          placeholder="Enter Player Two Name"
-          required
+          placeholder="Enter Player One Name"
+          maxlength="15"
+          autocomplete="off"
         />
 
         <label for="player-1">Player Two</label>
         <input
           type="text"
-          id="player-1"
+          id="player-2"
           placeholder="Enter Player Two Name"
-          required
+          maxlength="15"
+          autocomplete="off"
         />
       </form>
+
+      <div class="options__player-btns">
+        <button class="ai">Human VS AI</button>
+        <button>Human VS Human</button>
+      </div>
+
       <div class="options__diff-levels">
         <button data-difficulty="0">Can I play, Daddy?</button>
         <button data-difficulty="1">Bring 'em on!</button>
