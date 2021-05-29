@@ -5,6 +5,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="shortcut icon" href="favicon.png" type="image/x-icon" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="css/main.css" />
     <script src="js/script.js" defer></script>
     <title>Tic Tac Toe game</title>
@@ -27,8 +32,10 @@
         <div class="cell" data-position="7"></div>
         <div class="cell" data-position="8"></div>
         <!-- <button class="prueba">click</button> -->
-        <p class="turn-text"></p>
-        <button class="reset-btn">Reset</button>
+        <p class="game__turn-text"></p>
+        <button class="game__restart-btn restart-btn">
+          <span></span><span></span><span></span><span></span>Restart
+        </button>
       </div>
 
       <div class="game__player-info">
@@ -38,11 +45,14 @@
     </div>
     <div class="winning-message">
       <div class="winning-text"></div>
-      <button class="restartBtn">Restart</button>
+      <button class="restart-btn">
+        <span></span><span></span><span></span><span></span>Restart
+      </button>
     </div>
 
     <div class="options visible">
-      <h2 class="options__title">Tic Tac Toe</h2>
+      <img src="images/cyberdyne.png" alt="Cyberdyne Logo" />
+      <h2 class="options__title">Tic Tac Toe Division</h2>
 
       <form class="options__form">
         <label for="player-1">Player One</label>
@@ -65,16 +75,29 @@
       </form>
 
       <div class="options__player-btns">
-        <button class="ai">Human VS AI</button>
-        <button>Human VS Human</button>
+        <button class="ai">
+          <span></span><span></span><span></span><span></span>Human VS AI
+        </button>
+        <button>
+          <span></span><span></span><span></span><span></span>Human VS Human
+        </button>
       </div>
 
       <div class="options__diff-levels">
-        <button data-difficulty="0">Can I play, Daddy?</button>
-        <button data-difficulty="1">Bring 'em on!</button>
-        <button data-difficulty="2">I am Death incarnate!</button>
+        <button data-difficulty="0" class="selected">
+          <span></span><span></span><span></span><span></span>Can I play, Daddy?
+        </button>
+        <button data-difficulty="1">
+          <span></span><span></span><span></span><span></span>Bring 'em on!
+        </button>
+        <button data-difficulty="2">
+          <span></span><span></span><span></span><span></span>I am Death
+          incarnate!
+        </button>
       </div>
-      <button class="options__start-btn">Start Game</button>
+      <button class="options__start-btn">
+        <span></span><span></span><span></span><span></span>Start Game
+      </button>
     </div>
   </body>
 </html>

@@ -9,9 +9,9 @@ const gameBoard = (function () {
   const cells = document.querySelectorAll('.cell');
   const winningOverlay = document.querySelector('.winning-message');
   const winningTextEl = document.querySelector('.winning-text');
-  const restartBtn = document.querySelector('.restartBtn');
-  const resetBtn = document.querySelector('.reset-btn');
-  const turnText = document.querySelector('.turn-text');
+  const restartBtn = document.querySelectorAll('.restart-btn');
+  const resetBtn = document.querySelector('.game__reset-btn');
+  const turnText = document.querySelector('.game__turn-text');
 
   const optionsSelected = {
     players: false,
@@ -238,12 +238,6 @@ const gameBoard = (function () {
     else board.classList.add(playerOne.mark);
   }
 
-  function checkOptions() {
-    if (optionsSelected.players && optionsSelected.difficulty) {
-      startBtn.classList.add('visible');
-    }
-  }
-
   function setNameAndScore() {
     playerOne.score = 0;
     playerOne.scoreEl.textContent = playerOne.score;
@@ -266,7 +260,7 @@ const gameBoard = (function () {
     startGame();
   });
 
-  restartBtn.addEventListener('click', startGame);
+  restartBtn.forEach((btn) => btn.addEventListener('click', startGame));
 
   difficultyLevels.addEventListener('click', function (e) {
     if (!e.target.closest('button')) return;
@@ -276,7 +270,7 @@ const gameBoard = (function () {
     e.target.classList.add('selected');
     optionsSelected.difficulty = e.target.dataset.difficulty;
     console.log(optionsSelected.difficulty);
-    checkOptions();
+    startBtn.classList.add('visible');
   });
 
   playersBtns.addEventListener('click', function (e) {
@@ -296,6 +290,6 @@ const gameBoard = (function () {
     e.target.classList.add('selected');
 
     optionsSelected.players = true;
-    checkOptions();
+    startBtn.classList.add('visible');
   });
 })();

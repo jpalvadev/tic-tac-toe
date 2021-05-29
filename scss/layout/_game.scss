@@ -1,9 +1,11 @@
 .game {
   width: 100vw;
   height: 100vh;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
+  // display: flex;
+  // flex-direction: row;
+  // justify-content: space-around;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
 
   &__player-info {
     display: flex;
@@ -11,16 +13,17 @@
     justify-content: space-evenly;
     align-items: center;
     text-align: center;
-    background-color: aqua;
+    // background-color: aqua;
     font-size: 7rem;
   }
 
   &__board {
-    background-color: bisque;
+    // background-color: bisque;
     display: grid;
     justify-content: center;
     align-content: center;
     grid-template-columns: repeat(3, auto);
+    grid-template-rows: repeat(5, auto);
     grid-gap: 1rem;
 
     &.x .cell:hover:not(.o):not(.x)::before,
@@ -47,11 +50,25 @@
       background-size: 80%;
     }
   }
+
+  &__turn-text {
+    grid-row: 4;
+    grid-column: 1 / 4;
+    font-size: 2rem;
+    text-align: center;
+  }
+  &__restart-btn {
+    grid-row: 5;
+    grid-column: 1 / 4;
+  }
 }
 .cell {
   width: 10rem;
   height: 10rem;
-  border: 1px solid black;
+  // border: 1px solid black;
+  border: 2px solid var(--text-color);
+
+  // background-color: var(--btn-background);
   position: relative;
   cursor: pointer;
   // display: flex;
@@ -70,10 +87,12 @@
 
   &.x {
     background: url('../images/x.png') no-repeat center;
+    background-color: var(--btn-background);
   }
 
   &.o {
     background: url('../images/o.png') no-repeat center;
+    background-color: var(--btn-background);
   }
 
   &.o,
@@ -98,21 +117,21 @@
   color: white;
   font-size: 5rem;
 
-  button {
-    color: black;
-    font-size: 3rem;
-    background-color: white;
-    border: 2px solid black;
-    padding: 0.5rem 1rem;
-    cursor: pointer;
-    transition: all 0.3s;
+  // button {
+  //   color: black;
+  //   font-size: 3rem;
+  //   background-color: white;
+  //   border: 2px solid black;
+  //   padding: 0.5rem 1rem;
+  //   cursor: pointer;
+  //   transition: all 0.3s;
 
-    &:hover {
-      background-color: black;
-      border-color: white;
-      color: white;
-    }
-  }
+  //   &:hover {
+  //     background-color: black;
+  //     border-color: white;
+  //     color: white;
+  //   }
+  // }
 
   &.visible {
     display: flex;

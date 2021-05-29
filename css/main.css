@@ -1,9 +1,124 @@
+:root {
+  --color-background: #1f242d;
+  --btn-background: #262c37;
+  --text-color: #4e6994;
+  --light-color: #6ec9e6;
+  --white: #e9e7e7;
+  --accent-color: #b11b2b;
+  --cell-border: #4c566a;
+}
+
+@keyframes btn-selected {
+  0% {
+  }
+  50% {
+    background-color: var(--light-color);
+  }
+  100% {
+    background-color: var(--text-color);
+    color: var(--white);
+  }
+}
+
+button {
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 3rem;
+  background-color: var(--btn-background);
+  border: none;
+  padding: 1rem 3rem;
+  cursor: pointer;
+  transition: all 0.3s;
+  color: var(--text-color);
+  margin: 1rem;
+  letter-spacing: 2px;
+  position: relative;
+}
+
+button span {
+  position: absolute;
+  display: block;
+  background: var(--text-color);
+}
+
+button span:nth-child(1) {
+  left: 0;
+  bottom: 0;
+  width: 2px;
+  height: 100%;
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform 0.15s;
+}
+
+button span:nth-child(2) {
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 2px;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.15s;
+  transition-delay: 0.15s;
+}
+
+button span:nth-child(3) {
+  right: 0;
+  bottom: 0;
+  width: 2px;
+  height: 100%;
+  transform: scaleY(0);
+  transform-origin: bottom;
+  transition: transform 0.15s;
+  transition-delay: 0.3s;
+}
+
+button span:nth-child(4) {
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 2px;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.15s;
+  transition-delay: 0.45s;
+}
+
+button.selected {
+  animation: btn-selected 0.5s forwards;
+}
+
+button:hover span:nth-child(1) {
+  transform: scaleY(1);
+  transform-origin: bottom;
+  transition: transform 0.15s;
+}
+
+button:hover span:nth-child(2) {
+  transform: scaleX(1);
+  transform-origin: left;
+  transition: transform 0.15s;
+  transition-delay: 0.15s;
+}
+
+button:hover span:nth-child(3) {
+  transform: scaleY(1);
+  transform-origin: top;
+  transition: transform 0.15s;
+  transition-delay: 0.35s;
+}
+
+button:hover span:nth-child(4) {
+  transform: scaleY(1);
+  transform-origin: right;
+  transition: transform 0.15s;
+  transition-delay: 0.45s;
+}
+
 .game {
   width: 100vw;
   height: 100vh;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
 }
 
 .game__player-info {
@@ -12,16 +127,15 @@
   justify-content: space-evenly;
   align-items: center;
   text-align: center;
-  background-color: aqua;
   font-size: 7rem;
 }
 
 .game__board {
-  background-color: bisque;
   display: grid;
   justify-content: center;
   align-content: center;
   grid-template-columns: repeat(3, auto);
+  grid-template-rows: repeat(5, auto);
   grid-gap: 1rem;
 }
 
@@ -44,20 +158,34 @@
   background-size: 80%;
 }
 
+.game__turn-text {
+  grid-row: 4;
+  grid-column: 1 / 4;
+  font-size: 2rem;
+  text-align: center;
+}
+
+.game__restart-btn {
+  grid-row: 5;
+  grid-column: 1 / 4;
+}
+
 .cell {
   width: 10rem;
   height: 10rem;
-  border: 1px solid black;
+  border: 2px solid var(--text-color);
   position: relative;
   cursor: pointer;
 }
 
 .cell.x {
   background: url("../images/x.png") no-repeat center;
+  background-color: var(--btn-background);
 }
 
 .cell.o {
   background: url("../images/o.png") no-repeat center;
+  background-color: var(--btn-background);
 }
 
 .cell.o, .cell.x {
@@ -80,22 +208,6 @@
   font-size: 5rem;
 }
 
-.winning-message button {
-  color: black;
-  font-size: 3rem;
-  background-color: white;
-  border: 2px solid black;
-  padding: 0.5rem 1rem;
-  cursor: pointer;
-  transition: all 0.3s;
-}
-
-.winning-message button:hover {
-  background-color: black;
-  border-color: white;
-  color: white;
-}
-
 .winning-message.visible {
   display: flex;
 }
@@ -115,7 +227,7 @@
   margin: auto auto;
   justify-content: space-around;
   align-items: center;
-  background-color: cornflowerblue;
+  background-color: var(--color-background);
   visibility: hidden;
   transform: scale(0);
   transition: all 0.3s;
@@ -131,20 +243,15 @@
   flex-direction: column;
 }
 
-.options button {
-  color: black;
-  font-size: 3rem;
-  background-color: white;
-  border: 2px solid black;
-  padding: 0.5rem 1rem;
-  cursor: pointer;
-  transition: all 0.3s;
+.options img {
+  width: 15rem;
+  height: auto;
 }
 
-.options button.selected {
-  background-color: black;
-  border-color: white;
-  color: white;
+.options h2 {
+  color: var(--white);
+  font-weight: 700;
+  font-size: 3rem;
 }
 
 .options__diff-levels {
@@ -178,24 +285,8 @@
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  color: white;
+  color: var(--white);
   font-size: 5rem;
-}
-
-.winning-message button {
-  color: black;
-  font-size: 3rem;
-  background-color: white;
-  border: 2px solid black;
-  padding: 0.5rem 1rem;
-  cursor: pointer;
-  transition: all 0.3s;
-}
-
-.winning-message button:hover {
-  background-color: black;
-  border-color: white;
-  color: white;
 }
 
 .winning-message.visible {
@@ -215,5 +306,11 @@
 html {
   font-size: 62.5%;
   box-sizing: border-box;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background: var(--color-background);
+  color: var(--accent-color);
 }
 /*# sourceMappingURL=main.css.map */

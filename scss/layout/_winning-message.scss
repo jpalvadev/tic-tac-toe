@@ -10,24 +10,24 @@
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  color: white;
+  color: var(--white);
   font-size: 5rem;
 
-  button {
-    color: black;
-    font-size: 3rem;
-    background-color: white;
-    border: 2px solid black;
-    padding: 0.5rem 1rem;
-    cursor: pointer;
-    transition: all 0.3s;
+  // button {
+  //   color: black;
+  //   font-size: 3rem;
+  //   background-color: white;
+  //   border: 2px solid black;
+  //   padding: 0.5rem 1rem;
+  //   cursor: pointer;
+  //   transition: all 0.3s;
 
-    &:hover {
-      background-color: black;
-      border-color: white;
-      color: white;
-    }
-  }
+  //   &:hover {
+  //     background-color: black;
+  //     border-color: white;
+  //     color: white;
+  //   }
+  // }
 
   &.visible {
     display: flex;
