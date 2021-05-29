@@ -17,8 +17,10 @@
   <body>
     <div class="game">
       <div class="game__player-info">
-        <p class="game__player-name--one"></p>
-        <p class="game__player-score--one"></p>
+        <p class="game__player-name--one">John Connor</p>
+        <p class="game__player-score--one">
+          <span class="game__score-span">Score:&nbsp</span>10
+        </p>
       </div>
 
       <div class="game__board x">
@@ -31,7 +33,6 @@
         <div class="cell" data-position="6"></div>
         <div class="cell" data-position="7"></div>
         <div class="cell" data-position="8"></div>
-        <!-- <button class="prueba">click</button> -->
         <p class="game__turn-text"></p>
         <button class="game__restart-btn restart-btn">
           <span></span><span></span><span></span><span></span>Restart
@@ -39,8 +40,10 @@
       </div>
 
       <div class="game__player-info">
-        <p class="game__player-name--two"></p>
-        <p class="game__player-score--two"></p>
+        <p class="game__player-name--two">T-1000</p>
+        <p class="game__player-score--two">
+          <span class="game__score-span">Score:&nbsp</span>25
+        </p>
       </div>
     </div>
     <div class="winning-message">
@@ -55,32 +58,38 @@
       <h2 class="options__title">Tic Tac Toe Division</h2>
 
       <form class="options__form">
-        <label for="player-1">Player One</label>
-        <input
-          type="text"
-          id="player-1"
-          placeholder="Enter Player One Name"
-          maxlength="15"
-          autocomplete="off"
-        />
+        <div class="options__form--one">
+          <label for="player-1">Player One</label>
+          <input
+            type="text"
+            id="player-1"
+            placeholder="Enter Player One Name"
+            maxlength="12"
+            autocomplete="off"
+          />
+        </div>
 
-        <label for="player-1">Player Two</label>
-        <input
-          type="text"
-          id="player-2"
-          placeholder="Enter Player Two Name"
-          maxlength="15"
-          autocomplete="off"
-        />
+        <div class="options__form--two">
+          <label for="player-1">Player Two</label>
+          <input
+            type="text"
+            id="player-2"
+            placeholder="Enter Player Two Name"
+            maxlength="12"
+            autocomplete="off"
+          />
+        </div>
       </form>
 
       <div class="options__player-btns">
-        <button class="ai">
-          <span></span><span></span><span></span><span></span>Human VS AI
-        </button>
-        <button>
-          <span></span><span></span><span></span><span></span>Human VS Human
-        </button>
+        <div class="options__player-selection-btns">
+          <button class="ai">
+            <span></span><span></span><span></span><span></span>Human VS AI
+          </button>
+          <button>
+            <span></span><span></span><span></span><span></span>Human VS Human
+          </button>
+        </div>
       </div>
 
       <div class="options__diff-levels">

@@ -1,19 +1,17 @@
 .options {
-  display: flex;
-  flex-direction: column;
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  width: 100%;
+  width: 100vw;
   height: 100%;
-  max-width: 100rem;
-  max-height: 50rem;
-  margin: auto auto;
-  justify-content: space-around;
-  align-items: center;
-  background-color: var(--color-background);
+  max-width: 50rem;
+  margin: 0 auto;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   visibility: hidden;
   transform: scale(0);
   transition: all 0.3s;
@@ -24,40 +22,93 @@
   }
 
   &__form {
+    margin-block: 2rem;
+    gap: 1rem;
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
+
+    &--one {
+      display: grid;
+      grid-template-columns: repeat(2, auto);
+      align-items: center;
+      visibility: hidden;
+      opacity: 0;
+      transition: all 0.3s;
+
+      &.visible {
+        visibility: visible;
+        opacity: 1;
+      }
+    }
+    &--two {
+      display: grid;
+      grid-template-columns: repeat(2, auto);
+      align-items: center;
+      visibility: hidden;
+      opacity: 0;
+      transition: all 0.3s;
+
+      &.visible {
+        visibility: visible;
+        opacity: 1;
+      }
+    }
+
+    label {
+      font-size: clamp(1rem, 4vmin, 2rem);
+    }
+
+    input {
+      font-size: clamp(1rem, 4vmin, 2rem);
+      max-width: 20ch;
+      margin-left: auto;
+      background: var(--btn-background);
+      border: none;
+      outline: none;
+      color: white;
+      text-decoration: none;
+      padding: 0.5rem 1rem;
+
+      &::-webkit-input-placeholder {
+        font-size: clamp(0.8rem, 3vmin, 1.2rem);
+        text-align: center;
+      }
+      &::-moz-placeholder {
+        font-size: clamp(0.8rem, 3vmin, 1.2rem);
+        text-align: center;
+      }
+    }
   }
 
   img {
     width: 15rem;
     height: auto;
+    margin: 0 auto;
+    display: block;
   }
 
   h2 {
     color: var(--white);
     font-weight: 700;
-    font-size: 3rem;
+    font-size: clamp(1.5rem, 5.5vmin, 3rem);
+    text-align: center;
   }
 
-  // button {
-  //   color: black;
-  //   font-size: 3rem;
-  //   background-color: white;
-  //   border: 2px solid black;
-  //   padding: 0.5rem 1rem;
-  //   cursor: pointer;
-  //   transition: all 0.3s;
-
-  //   &.selected {
-  //     background-color: black;
-  //     border-color: white;
-  //     color: white;
-  //   }
-  // }
+  &__player-selection-btns {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
 
   &__diff-levels {
     visibility: hidden;
     opacity: 0;
+    transition: all 0.3s;
+    display: grid;
+    grid-template-rows: repeat(3, auto);
+    gap: 1rem;
+    margin-block: 2rem;
 
     &.visible {
       visibility: visible;
@@ -68,6 +119,8 @@
   &__start-btn {
     visibility: hidden;
     opacity: 0;
+    transition: all 0.3s;
+    width: 100%;
 
     &.visible {
       visibility: visible;

@@ -1,24 +1,39 @@
 .game {
-  width: 100vw;
-  height: 100vh;
-  // display: flex;
-  // flex-direction: row;
-  // justify-content: space-around;
+  width: 100%;
+  height: 100%;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, auto-fit);
+  gap: 2rem;
+
+  visibility: hidden;
+  opacity: 0;
+  transition: all 0.5s;
+
+  @media (min-width: 900px), (orientation: landscape) {
+    grid-template-columns: 3fr 4fr 3fr;
+  }
+  &.visible {
+    visibility: visible;
+    opacity: 1;
+  }
 
   &__player-info {
     display: flex;
     flex-direction: column;
-    justify-content: space-evenly;
+    justify-content: center;
+    padding: 2rem;
     align-items: center;
     text-align: center;
-    // background-color: aqua;
-    font-size: 7rem;
+    background-color: var(--btn-background);
+    font-size: clamp(1rem, 6vmin, 5rem);
+  }
+
+  &__score-span {
+    color: var(--text-color);
+    display: inline-block;
   }
 
   &__board {
-    // background-color: bisque;
     display: grid;
     justify-content: center;
     align-content: center;
@@ -28,25 +43,20 @@
 
     &.x .cell:hover:not(.o):not(.x)::before,
     &.o .cell:hover:not(.o):not(.x)::before {
-      content: '';
+      content: "";
       position: absolute;
       width: 100%;
       height: 100%;
-      // display: flex;
-      // justify-content: center;
-      // width: 100%;
-      // height: 100%;
-      // background-size: 80%;
       opacity: 0.25;
     }
 
     &.x .cell:hover:not(.o):not(.x)::before {
-      background: url('../images/x.png') no-repeat center;
+      background: url("../images/x.png") no-repeat center;
       background-size: 80%;
     }
 
     &.o .cell:hover:not(.o):not(.x)::before {
-      background: url('../images/o.png') no-repeat center;
+      background: url("../images/o.png") no-repeat center;
       background-size: 80%;
     }
   }
@@ -54,7 +64,7 @@
   &__turn-text {
     grid-row: 4;
     grid-column: 1 / 4;
-    font-size: 2rem;
+    font-size: clamp(1rem, 4vmin, 2rem);
     text-align: center;
   }
   &__restart-btn {
@@ -63,35 +73,19 @@
   }
 }
 .cell {
-  width: 10rem;
-  height: 10rem;
-  // border: 1px solid black;
+  width: 17vmin;
+  height: 17vmin;
   border: 2px solid var(--text-color);
-
-  // background-color: var(--btn-background);
   position: relative;
   cursor: pointer;
-  // display: flex;
-  // justify-content: center;
-  // align-items: center;
-
-  // &:hover:not(.o):not(.x)::before {
-  //   content: "";
-  //   position: absolute;
-  //   width: 100%;
-  //   height: 100%;
-  //   background: url("../images/x.png") no-repeat center;
-  //   background-size: 80%;
-  //   opacity: 0.25;
-  // }
 
   &.x {
-    background: url('../images/x.png') no-repeat center;
+    background: url("../images/x.png") no-repeat center;
     background-color: var(--btn-background);
   }
 
   &.o {
-    background: url('../images/o.png') no-repeat center;
+    background: url("../images/o.png") no-repeat center;
     background-color: var(--btn-background);
   }
 
@@ -110,28 +104,11 @@
   bottom: 0;
   display: none;
   background-color: rgba(0, 0, 0, 0.9);
-  // display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
   color: white;
   font-size: 5rem;
-
-  // button {
-  //   color: black;
-  //   font-size: 3rem;
-  //   background-color: white;
-  //   border: 2px solid black;
-  //   padding: 0.5rem 1rem;
-  //   cursor: pointer;
-  //   transition: all 0.3s;
-
-  //   &:hover {
-  //     background-color: black;
-  //     border-color: white;
-  //     color: white;
-  //   }
-  // }
 
   &.visible {
     display: flex;

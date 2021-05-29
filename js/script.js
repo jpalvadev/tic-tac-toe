@@ -1,17 +1,19 @@
 const gameBoard = (function () {
-  ///////// Definitions /////////
+  ///////// Declarations /////////
 
-  const difficultyLevels = document.querySelector('.options__diff-levels');
-  const playersBtns = document.querySelector('.options__player-btns');
-  const optionsScreen = document.querySelector('.options');
-  const startBtn = document.querySelector('.options__start-btn');
-  const board = document.querySelector('.game__board');
-  const cells = document.querySelectorAll('.cell');
-  const winningOverlay = document.querySelector('.winning-message');
-  const winningTextEl = document.querySelector('.winning-text');
-  const restartBtn = document.querySelectorAll('.restart-btn');
-  const resetBtn = document.querySelector('.game__reset-btn');
-  const turnText = document.querySelector('.game__turn-text');
+  const difficultyLevels = document.querySelector(".options__diff-levels");
+  const playersBtns = document.querySelector(".options__player-selection-btns");
+  const optionsScreen = document.querySelector(".options");
+  const startBtn = document.querySelector(".options__start-btn");
+  const board = document.querySelector(".game__board");
+  const cells = document.querySelectorAll(".cell");
+  const winningOverlay = document.querySelector(".winning-message");
+  const winningTextEl = document.querySelector(".winning-text");
+  const restartBtn = document.querySelectorAll(".restart-btn");
+  const turnText = document.querySelector(".game__turn-text");
+  const gameUI = document.querySelector(".game");
+  const playerOneForm = document.querySelector(".options__form--one");
+  const playerTwoForm = document.querySelector(".options__form--two");
 
   const optionsSelected = {
     players: false,
@@ -32,29 +34,27 @@ const gameBoard = (function () {
   let playerTwoTurn;
 
   const playerOne = {
-    name: '',
-    nameEl: document.querySelector('.game__player-name--one'),
+    name: "",
+    nameEl: document.querySelector(".game__player-name--one"),
     score: 0,
-    scoreEl: document.querySelector('.game__player-score--one'),
-    type: 'human',
-    mark: 'x',
+    scoreEl: document.querySelector(".game__player-score--one"),
+    type: "human",
+    mark: "x",
   };
 
   const playerTwo = {
-    name: '',
-    nameEl: document.querySelector('.game__player-name--two'),
+    name: "",
+    nameEl: document.querySelector(".game__player-name--two"),
     score: 0,
-    scoreEl: document.querySelector('.game__player-score--two'),
-    type: 'human',
-    mark: 'o',
+    scoreEl: document.querySelector(".game__player-score--two"),
+    type: "human",
+    mark: "o",
     difficulty: 0,
   };
 
   let origBoard = [];
 
   /////////// Game Logic ///////////
-
-  function reset() {}
 
   function startGame() {
     playerTwoTurn = false;
@@ -63,9 +63,9 @@ const gameBoard = (function () {
     cells.forEach((cell) => {
       cell.classList.remove(playerTwo.mark);
       cell.classList.remove(playerOne.mark);
-      winningOverlay.classList.remove('visible');
-      cell.removeEventListener('click', handleClick);
-      cell.addEventListener('click', handleClick, { once: true });
+      winningOverlay.classList.remove("visible");
+      cell.removeEventListener("click", handleClick);
+      cell.addEventListener("click", handleClick, { once: true });
     });
 
     setBoardHoverClass();
@@ -82,7 +82,7 @@ const gameBoard = (function () {
   }
 
   function emptyIndexies(board) {
-    return board.filter((space) => space !== 'o' && space !== 'x');
+    return board.filter((space) => space !== "o" && space !== "x");
   }
 
   function handleClick(e) {
@@ -93,7 +93,7 @@ const gameBoard = (function () {
     putMarkOnBoardArray(cell.dataset.position, currentPlayer);
     if (checkOutcome(cell, currentPlayer)) return;
 
-    if (playerTwo.type !== 'ai') return;
+    if (playerTwo.type !== "ai") return;
 
     // CPU Move
     currentPlayer = playerTwoTurn ? playerTwo : playerOne;
@@ -111,7 +111,7 @@ const gameBoard = (function () {
 
       case 2:
         computerMove = bestAIMove();
-        cells[computerMove].removeEventListener('click', handleClick);
+        cells[computerMove].removeEventListener("click", handleClick);
         break;
     }
 
@@ -210,7 +210,7 @@ const gameBoard = (function () {
   }
 
   function checkForDraw() {
-    return origBoard.every((cell) => typeof cell !== 'number');
+    return origBoard.every((cell) => typeof cell !== "number");
   }
 
   function endGame(draw, currentPlayer) {
@@ -219,9 +219,9 @@ const gameBoard = (function () {
     } else {
       winningTextEl.textContent = `${currentPlayer.name} Wins!`;
       currentPlayer.score++;
-      currentPlayer.scoreEl.textContent = currentPlayer.score;
+      currentPlayer.scoreEl.innerHTML = `<span class="game__score-span">Score:&nbsp</span>${currentPlayer.score}`;
     }
-    winningOverlay.classList.add('visible');
+    winningOverlay.classList.add("visible");
   }
 
   ////////////// UI changes and Event Listeners //////////////
@@ -240,56 +240,66 @@ const gameBoard = (function () {
 
   function setNameAndScore() {
     playerOne.score = 0;
-    playerOne.scoreEl.textContent = playerOne.score;
+    playerOne.scoreEl.innerHTML = `<span class="game__score-span">Score:&nbsp</span>${playerOne.score}`;
     playerOne.nameEl.textContent =
-      document.getElementById('player-1').value || 'John Connor';
+      document.getElementById("player-1").value || "John Connor";
     playerOne.name = playerOne.nameEl.textContent;
     playerTwo.score = 0;
-    playerTwo.scoreEl.textContent = playerTwo.score;
+    playerTwo.scoreEl.innerHTML = `<span class="game__score-span">Score:&nbsp</span>${playerTwo.score}`;
     playerTwo.nameEl.textContent =
-      document.getElementById('player-2').value || 'T-1000';
+      playerTwo.type === "ai" || !document.getElementById("player-2").value
+        ? "T-1000"
+        : document.getElementById("player-2").value;
     playerTwo.name = playerTwo.nameEl.textContent;
   }
 
-  startBtn.addEventListener('click', function (e) {
-    optionsScreen.classList.remove('visible');
-    startBtn.classList.remove('visible');
+  startBtn.addEventListener("click", function (e) {
+    optionsScreen.classList.remove("visible");
+    startBtn.classList.remove("visible");
+
+    setTimeout(() => {
+      gameUI.classList.add("visible");
+    }, 300);
+
     playerTwo.difficulty = Number(optionsSelected.difficulty);
 
     setNameAndScore();
     startGame();
   });
 
-  restartBtn.forEach((btn) => btn.addEventListener('click', startGame));
+  restartBtn.forEach((btn) => btn.addEventListener("click", startGame));
 
-  difficultyLevels.addEventListener('click', function (e) {
-    if (!e.target.closest('button')) return;
+  difficultyLevels.addEventListener("click", function (e) {
+    if (!e.target.closest("button")) return;
     [...difficultyLevels.children].forEach((btn) =>
-      btn.classList.remove('selected')
+      btn.classList.remove("selected")
     );
-    e.target.classList.add('selected');
+    e.target.classList.add("selected");
     optionsSelected.difficulty = e.target.dataset.difficulty;
-    console.log(optionsSelected.difficulty);
-    startBtn.classList.add('visible');
+    startBtn.classList.add("visible");
   });
 
-  playersBtns.addEventListener('click', function (e) {
-    if (!e.target.closest('button')) return;
+  playersBtns.addEventListener("click", function (e) {
+    if (!e.target.closest("button")) return;
 
-    if (e.target.classList.contains('ai')) {
-      difficultyLevels.classList.add('visible');
-      playerTwo.type = 'ai';
+    if (e.target.classList.contains("ai")) {
+      difficultyLevels.classList.add("visible");
+      playerTwoForm.classList.remove("visible");
+      playerTwo.type = "ai";
+      playerTwo.name = "T-1000";
     } else {
-      difficultyLevels.classList.remove('visible');
-      playerTwo.type = 'human';
+      difficultyLevels.classList.remove("visible");
+      playerTwoForm.classList.add("visible");
+      playerTwo.type = "human";
     }
+    playerOneForm.classList.add("visible");
 
     [...playersBtns.children].forEach((btn) =>
-      btn.classList.remove('selected')
+      btn.classList.remove("selected")
     );
-    e.target.classList.add('selected');
+    e.target.classList.add("selected");
 
     optionsSelected.players = true;
-    startBtn.classList.add('visible');
+    startBtn.classList.add("visible");
   });
 })();
